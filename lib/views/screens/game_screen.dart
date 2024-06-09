@@ -58,9 +58,13 @@ class _GameScreenState extends State<GameScreen> {
         position[resultPositionIndex[i]] = 1;
       }
     }
-    print(bombTomatoPositionIndex);
-    print(simpleTomatoPositionIndex);
-    print(position);
+
+    Future.delayed(Duration(seconds: 2)).then(
+      (value) {
+        setState(() {});
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Pomidor"),
