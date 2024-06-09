@@ -13,57 +13,39 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
-    List<int> position = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<int> position = List.filled(10, 0);
 
-    int bombTomatoCount = Random().nextInt(4);
-    List<int> bombTomatoPositionIndex = [];
+    Random random = Random();
 
-    int count1 = 0;
-    while (true) {
-      if (count1 > bombTomatoCount) {
-        break;
-      } else {
-        int randomNumber = Random().nextInt(10);
-        if (!bombTomatoPositionIndex.contains(randomNumber)) {
-          bombTomatoPositionIndex.add(randomNumber);
-          count1++;
-        }
+    int bombTomatoCount = random.nextInt(4);
+    Set<int> bombTomatoPositionIndex = {};
+
+    while (bombTomatoPositionIndex.length < bombTomatoCount) {
+      bombTomatoPositionIndex.add(random.nextInt(10));
+    }
+
+    int simpleTomatoCount = random.nextInt(position.length - bombTomatoCount);
+    Set<int> simpleTomatoPositionIndex = {};
+
+    while (simpleTomatoPositionIndex.length < simpleTomatoCount) {
+      int randomNumber = random.nextInt(10);
+      if (!bombTomatoPositionIndex.contains(randomNumber)) {
+        simpleTomatoPositionIndex.add(randomNumber);
       }
     }
 
-    int simpleTomatoCount = Random().nextInt(position.length - bombTomatoCount);
-    List<int> simpleTomatoPositionIndex = [];
-
-    int count2 = 0;
-    while (true) {
-      if (count2 > simpleTomatoCount) {
-        break;
-      } else {
-        int randomNumber = Random().nextInt(10);
-        if (!simpleTomatoPositionIndex.contains(randomNumber) &&
-            !bombTomatoPositionIndex.contains(randomNumber)) {
-          simpleTomatoPositionIndex.add(randomNumber);
-          count2++;
-        }
-      }
+    for (int index in bombTomatoPositionIndex) {
+      position[index] = -1;
     }
 
-    List<int> resultPositionIndex =
-        bombTomatoPositionIndex + simpleTomatoPositionIndex;
-
-    for (int i = 0; i < resultPositionIndex.length; i++) {
-      if (bombTomatoPositionIndex.contains(resultPositionIndex[i])) {
-        position[resultPositionIndex[i]] = -1;
-      } else {
-        position[resultPositionIndex[i]] = 1;
-      }
+    for (int index in simpleTomatoPositionIndex) {
+      position[index] = 1;
     }
 
-    Future.delayed(Duration(seconds: 2)).then(
-      (value) {
-        setState(() {});
-      },
-    );
+    Future.delayed(const Duration(seconds: 2)).then((value) {
+      setState(() {});
+    });
+
 
     return Scaffold(
       appBar: AppBar(
